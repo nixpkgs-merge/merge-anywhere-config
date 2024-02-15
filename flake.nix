@@ -18,6 +18,18 @@
         modules = [
           disko.nixosModules.disko
           { disko.devices.disk.disk1.device = "/dev/vda"; }
+          { 
+            networking.interfaces.ens3.ipv4.addresses =  [ {   
+                address = "128.199.101.139";
+                prefixLength = 24;
+            }]; 
+            networking.interfaces.ens4.ipv4.addresses = [
+              {
+                address = "128.199.101.139";
+                prefixLength = 24;
+              }            
+            ]; 
+          }
           ./configuration.nix
         ];
       };
