@@ -1,0 +1,9 @@
+keys:
+  - &merge-bot-server age150zm4arwau8pvmjmrzlkrnyg93m7lv2nytt6kkyjhnu7jpdwgyss32pxqd
+  - &qubasa-desktop age1zwte859d9nvg6wy5dugjkf38dqe8w8qkt2as7xcc5pw3285833xs797uan
+creation_rules:
+  - path_regex: secrets.yaml$
+    key_groups:
+      - age:
+        - *qubasa-desktop
+        - *merge-bot-server

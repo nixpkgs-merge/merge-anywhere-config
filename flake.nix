@@ -2,12 +2,19 @@
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
   inputs.disko.url = "github:nix-community/disko";
   inputs.disko.inputs.nixpkgs.follows = "nixpkgs";
+  inputs.mergebot.url = "github:Luis-Hebendanz/nixpkgs-merge-bot";
 
-  outputs = { nixpkgs, disko, ... }:
+  inputs.sops-nix.url = "github:Mic92/sops-nix";
+  inputs.sops-nix.inputs.nixpkgs.follows = "nixpkgs";
+
+
+  outputs = { nixpkgs, disko,  mergebot, sops-nix, ... }:
     {
       nixosConfigurations.hetzner-cloud = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
+          sops-nix.nixosModules.sops
+          mergebot.nixosModules.nixpkgs-merge-bot
           disko.nixosModules.disko
           ./configuration.nix
         ];
@@ -18,18 +25,6 @@
         modules = [
           disko.nixosModules.disko
           { disko.devices.disk.disk1.device = "/dev/vda"; }
-          { 
-            networking.interfaces.ens3.ipv4.addresses =  [ {   
-                address = "128.199.101.139";
-                prefixLength = 24;
-            }]; 
-            networking.interfaces.ens4.ipv4.addresses = [
-              {
-                address = "128.199.101.139";
-                prefixLength = 24;
-              }            
-            ]; 
-          }
           ./configuration.nix
         ];
       };

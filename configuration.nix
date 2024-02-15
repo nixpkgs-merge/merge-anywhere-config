@@ -21,10 +21,40 @@
   # Aktivieren Sie Mosh
   programs.mosh.enable = true;
 
+  sops.defaultSopsFile = ./secrets.yaml;
+  sops.secrets.github_app_key = { };
+  sops.secrets.webhook_secrets = { };
+
+  services.nixpkgs-merge-bot = {
+    enable = true;
+    github-app-id = 829066;
+    github-app-login = "nixpkgs-merge";
+    github-app-private-key-file = config.sops.secrets.github_app_key.path;
+    bot-name = "nixpkgs-merge-bot";
+    hostname = "195.201.130.247";
+    webhook-secret-file = config.sops.secrets.webhook_secrets.path;
+  };
+
+  #age150zm4arwau8pvmjmrzlkrnyg93m7lv2nytt6kkyjhnu7jpdwgyss32pxqd
+   nix = {
+    settings = {
+      sandbox = "relaxed";
+      experimental-features = [
+        "flakes"
+        "nix-command"
+      ];
+    };
+
+    package = pkgs.nixUnstable;
+    gc.automatic = true;
+    gc.dates = "weekly";
+    gc.options = "--delete-older-than 15d";
+   };
 
   environment.systemPackages = map lib.lowPrio [
     pkgs.curl
     pkgs.gitMinimal
+    pkgs.ssh-to-age
   ];
 
   users.users.root.openssh.authorizedKeys.keys = [
