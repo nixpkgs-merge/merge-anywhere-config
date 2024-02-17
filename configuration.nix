@@ -61,6 +61,9 @@
   environment.systemPackages = map lib.lowPrio [
     pkgs.curl
     pkgs.gitMinimal
+    pkgs.tcpdump
+    pkgs.helix
+    pkgs.neovim
     pkgs.ssh-to-age
   ];
 
