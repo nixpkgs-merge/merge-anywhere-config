@@ -31,7 +31,7 @@
     github-app-login = "nixpkgs-merge"; 
     github-app-private-key-file = config.sops.secrets.github_app_key.path;
     bot-name = "mergebot-testing-qubasa";
-    hostname = "195.201.130.247";
+    hostname = "mergebot.gchq.icu";
     webhook-secret-file = config.sops.secrets.webhook_secrets.path;
   };
 

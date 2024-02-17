@@ -94,11 +94,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1708095330,
-        "narHash": "sha256-/2Zzp3wMBmUbvmC7qiz1bzqRi0b66PGaFELDILP/WlA=",
+        "lastModified": 1708145519,
+        "narHash": "sha256-2zQFCB1/N3y61fl0LNpfnYxf4N+4V39QaDigtSwYGYE=",
         "owner": "Luis-Hebendanz",
         "repo": "nixpkgs-merge-bot",
-        "rev": "c136b6a10121011676d31c3a2dfa79766b1e525e",
+        "rev": "2b3e723e259db0d872e3858ebf78890f6f5db23b",
         "type": "github"
       },
       "original": {
