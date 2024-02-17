@@ -30,12 +30,11 @@
     github-app-id = 829066;
     github-app-login = "nixpkgs-merge";
     github-app-private-key-file = config.sops.secrets.github_app_key.path;
-    bot-name = "nixpkgs-merge-bot";
+    bot-name = "mergebot-testing-qubasa";
     hostname = "195.201.130.247";
     webhook-secret-file = config.sops.secrets.webhook_secrets.path;
   };
 
-  #age150zm4arwau8pvmjmrzlkrnyg93m7lv2nytt6kkyjhnu7jpdwgyss32pxqd
    nix = {
     settings = {
       sandbox = "relaxed";
