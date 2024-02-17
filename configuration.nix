@@ -28,12 +28,20 @@
   services.nixpkgs-merge-bot = {
     enable = true;
     github-app-id = 829066;
-    github-app-login = "nixpkgs-merge";
+    github-app-login = "nixpkgs-merge"; 
     github-app-private-key-file = config.sops.secrets.github_app_key.path;
     bot-name = "mergebot-testing-qubasa";
     hostname = "195.201.130.247";
     webhook-secret-file = config.sops.secrets.webhook_secrets.path;
   };
+
+
+  services.nginx = {
+    enable = true;
+    recommendedTlsSettings = true;
+  };
+  security.acme.acceptTerms = true;
+  security.acme.defaults.email = "nix@qube.email";
 
    nix = {
     settings = {
