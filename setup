@@ -16,7 +16,7 @@ fi
 
 # Create a temporary directory
 temp=$(mktemp -d)
-  
+
 # Create the directory where sshd expects to find the host keys
 install -d -m755 "$temp/etc/ssh"
 
@@ -50,6 +50,8 @@ EOF
 
 echo "[*] Press Enter to continue"
 read anykey
+
+
 echo "[*] Execute 'sops secrets.yaml' fill in your Github App secrets"
 
 cat << EOF
@@ -83,10 +85,10 @@ cat << EOF
     github-app-private-key-file = config.sops.secrets.github_app_key.path;
 
     # CHANGE ME
-    github-app-id = 829066;
-    github-app-login = "nixpkgs-merge";
-    bot-name = "mergebot-testing-qubasa";
-    hostname = "mergebot.gchq.icu";
+    github-app-id = 829066; # <-- app id found on github app page
+    github-app-login = "nixpkgs-merge"; # <--- organization name
+    bot-name = "mergebot-testing-qubasa"; # <-- display name of bot
+    hostname = "mergebot.gchq.icu"; # <-- Domain name of the webhook you set on github app creation
   };
 EOF
 
@@ -96,4 +98,6 @@ read anykey
 cat << EOF
 To install your mergebot machine to a hetzner x64 vm. Execute:
 $ nixos-anywhere --extra-files "$temp" --flake .#hetzner-cloud root@<ip>
+To update an existing installation execute
+$ ./deploy root@<ip>
 EOF

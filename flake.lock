@@ -114,15 +114,15 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1708145519,
-        "narHash": "sha256-2zQFCB1/N3y61fl0LNpfnYxf4N+4V39QaDigtSwYGYE=",
-        "owner": "Luis-Hebendanz",
+        "lastModified": 1708237884,
+        "narHash": "sha256-KKjrjBWIGtMT1xNXLHtcBBHnsdNXBZVjftd4Lx49Tlk=",
+        "owner": "NixOS",
         "repo": "nixpkgs-merge-bot",
-        "rev": "2b3e723e259db0d872e3858ebf78890f6f5db23b",
+        "rev": "03ff06c5592ec4244d1a862d19c0f09b39e0fbd6",
         "type": "github"
       },
       "original": {
-        "owner": "Luis-Hebendanz",
+        "owner": "NixOS",
         "repo": "nixpkgs-merge-bot",
         "type": "github"
       }
