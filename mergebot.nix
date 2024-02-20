@@ -13,13 +13,17 @@
 
   services.nixpkgs-merge-bot = {
     enable = true;
-    github-app-id = 829066;
-    github-app-login = "nixpkgs-merge"; 
+    github-app-id = 830957;
+    github-app-login = "NixOS";
     github-app-private-key-file = config.sops.secrets.github_app_key.path;
     bot-name = "mergebot-testing-qubasa";
     hostname = "mergebot.gchq.icu";
     webhook-secret-file = config.sops.secrets.webhook_secrets.path;
   };
 
+  systemd.services.nixpkgs-merge-bot.environment = {
+    LOGLEVEL = "DEBUG";
+    STAGING = "TRUE";
+  };
 
 }

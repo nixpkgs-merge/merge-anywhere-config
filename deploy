@@ -1,3 +1,11 @@
 #!/usr/bin/env bash
 
-nixos-rebuild --use-substitutes --flake .#hetzner-cloud --target-host root@195.201.130.247 switch
+if [ $# -lt 1 ]; then
+  echo "Usage: $0 <host>"
+  exit 1
+fi
+
+# The first argument is the host
+host=$1
+
+nixos-rebuild --use-substitutes --flake .#hetzner-cloud --target-host ""$host" switch
