@@ -27,6 +27,7 @@
   sops.secrets.github_app_key = { };
   sops.secrets.webhook_secrets = { };
 
+
   services.nginx = {
     enable = true;
     recommendedTlsSettings = true;
