@@ -1,0 +1,95 @@
+#!/usr/bin/env bash
+
+set -eou pipefail
+
+
+if [ ! -f "$HOME/.config/sops/age/keys.txt" ]; then
+  echo "Error: Required file ~/.config/sops/age/keys.txt does not exist."
+cat << EOF
+Generate an age key by executing:
+$ mkdir -p ~/.config/sops/age
+$ age-keygen -o ~/.config/sops/age/keys.txt
+EOF
+  exit 1
+fi
+
+
+# Create a temporary directory
+temp=$(mktemp -d)
+  
+# Create the directory where sshd expects to find the host keys
+install -d -m755 "$temp/etc/ssh"
+
+# Decrypt your private key from the password store and copy it to the temporary directory
+ssh-keygen -t ed25519 -f  "$temp/etc/ssh/ssh_host_ed25519_key" -q -N ""
+
+# Set the correct permissions so sshd will accept the key
+chmod 600 "$temp/etc/ssh/ssh_host_ed25519_key"
+
+
+echo "[*] Secret key has been generated and placed in $temp/etc/ssh/ssh_host_ed25519_key"
+
+server_agekey=$(ssh-to-age < "$temp/etc/ssh/ssh_host_ed25519_key.pub")
+
+my_agekey=$(age-keygen -y ~/.config/sops/age/keys.txt)
+
+
+echo "[*] Write the following to your ./secrets.yaml file:"
+cat << EOF
+keys:
+  - &mymergebot $server_agekey
+  - &mydesktop  $my_agekey
+creation_rules:
+  - path_regex: secrets.yaml$
+    key_groups:
+      - age:
+        - *mymergebot
+        - *mydesktop
+EOF
+
+
+
+echo "[*] Press Enter to continue"
+read anykey
+echo "[*] Execute 'sops secrets.yaml' fill in your Github App secrets"
+
+cat << EOF
+github_app_key: |
+    -----BEGIN RSA PRIVATE KEY-----
+    ...
+    -----END RSA PRIVATE KEY-----
+webhook_secrets: mysecret
+EOF
+
+
+echo "[*] Press Enter to continue"
+read anykey
+
+echo "[*] Now edit the mergebot.nix file and add the required metadata from your Github App"
+cat << EOF
+  security.acme.defaults.email = "<YOUR ACME EMAIL>";
+
+  users.users.root.openssh.authorizedKeys.keys = [
+    "<YOUR SSH PUB KEY>"
+  ];
+
+  services.nixpkgs-merge-bot = {
+    enable = true;
+    webhook-secret-file = config.sops.secrets.webhook_secrets.path;
+    github-app-private-key-file = config.sops.secrets.github_app_key.path;
+
+    # CHANGE ME
+    github-app-id = 829066;  
+    github-app-login = "nixpkgs-merge"; 
+    bot-name = "mergebot-testing-qubasa";
+    hostname = "mergebot.gchq.icu";
+  };
+EOF
+
+echo "[*] Press Enter to continue"
+read anykey
+
+cat << EOF
+To install your mergebot machine to a hetzner x64 vm. Execute:
+$ nixos-anywhere --extra-files "$temp" --flake .#hetzner-cloud root@<ip>
+EOF
